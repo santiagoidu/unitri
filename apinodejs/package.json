@@ -1,8 +1,21 @@
 {
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "express": "^4.17.2",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.1"
-  }
+    "name": "apinodejs",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon src/index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "express": "^4.17.1",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.8.10"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.2"
+    }
 }
