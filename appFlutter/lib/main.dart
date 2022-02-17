@@ -1,35 +1,48 @@
+import 'dart:convert';
+
+
+import 'package:appnode/view/addProducts.dart';
+import 'package:appnode/view/listProducts.dart';
+import 'package:appnode/view/loginPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Unitri',
-      theme: ThemeData(   
-        primarySwatch: Colors.blue,
-      ),
+      title: "App NodeJs Mongodb",
+      debugShowCheckedModeBanner: false,
       home: MainPage(),
+      theme: ThemeData(
+        accentColor: Colors.white70
+      ),
     );
   }
 }
-class MainPage extends StatefulWidget {
-  const ({ Key? key }) : super(key: key);
 
+class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
 
-class MainPageState extends State<MainPage> {
- 
+class _MainPageState extends State<MainPage> {
+
   SharedPreferences sharedPreferences;
 
+  @override
+  void initState() {
+    super.initState();
+    checkLoginStatus();
+  }
+
   checkLoginStatus() async {
-    sharedPreferences = await sharedPreferences.getInstance();
-    if(sharedPreferences.getString("token") == null){
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token") == null) {
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
     }
   }
@@ -38,7 +51,7 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Unitri", style: TextStyle(color: Colors.white)),
+        title: Text("Nodejs-Mongodb", style: TextStyle(color: Colors.white)),
         actions: <Widget>[
           FlatButton(
             onPressed: () {
@@ -46,33 +59,41 @@ class MainPageState extends State<MainPage> {
               sharedPreferences.commit();
               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
             },
-            child: Text("Logout", style: TextStyle(color: Colors.white),),
-          )
-        ]
+            child: Text("Log Out", style: TextStyle(color: Colors.white)),
+          ),
+        ],
       ),
-      body: Center(child: Text("Unitri")),
+      body: Center(child: Text("Main Page")),
       drawer: Drawer(
         child: new ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(
-              accountName: new Text("Unitri"),
-              accountEmail: new Text("unitri@unitri.edu.com")
-              ),
-              new ListTile(title: new Text("Lista Unitri"),
-              trailing: new Icon(Icon.list),
-              onTap: () {},
-              ),
-              new ListTile(title: new Text("Add a Lista da unitri"),
-              trailing: new Icon(Icon.add),
-              onTap: () {},
-              ),
-              new ListTile(title: new Text("Registrar usuario da Unitri"),
-              trailing: new Icon(Icon.add),
-              onTap: () {},
-              ),
-          ],
-        ),
+              children: <Widget>[
+                new UserAccountsDrawerHeader(
+                  accountName: new Text('Ejercicios'),
+                  accountEmail: new Text('codigoalphacol@gmail.com'),
+                ),
+               new ListTile(
+                  title: new Text("List Products"),
+                  trailing: new Icon(Icons.help),
+                  onTap: () => Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => ListProducts(),
+                  )),
+                  ),
+                new ListTile(
+                  title: new Text("Add Products"),
+                  trailing: new Icon(Icons.help),
+                 onTap: () => Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => AddDataProduct(),
+                  )),
+                  ),                
+                 new Divider(),
+                new ListTile(
+                  title: new Text("Register user"),
+                  trailing: new Icon(Icons.fitness_center),
+                  onTap: () => {},                  
+                ),
+              ],
+      ),
       ),
     );
-  } 
+  }
 }
